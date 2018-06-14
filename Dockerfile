@@ -1,0 +1,1 @@
+from gcr.io/spinnaker-marketplace/halyard:stable
