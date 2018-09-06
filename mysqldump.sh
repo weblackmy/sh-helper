@@ -8,7 +8,7 @@ mysql_pass=""
 mysql_port=""
 mysql_backup_db=""
 mysql_backup_dir="/data/backup/mysql"
-msyql_backup_file=${mysql_backup_dir}"/"`date +"%Y-%m-%d"`".sql.gz"
+mysql_backup_file=${mysql_backup_dir}"/"`date +"%Y-%m-%d"`".sql.gz"
 mysql_dump_error=${mysql_backup_dir}"/mysqldump.error"
 #if 0 means every backup will save. otherwise will save n
 save_latest_n_backup=30
@@ -31,16 +31,16 @@ mysqldump -h${mysql_host} -P${mysql_port} -u${mysql_user} -p${mysql_pass} \
 	--events \
 	--single-transaction \
 	--log-error=${mysql_dump_error} \
-	${option_database} | gzip > ${msyql_backup_file}
+	${option_database} | gzip > ${mysql_backup_file}
 	
 
-if [[ ! -f ${msyql_backup_file} ]]; then
+if [[ ! -f ${mysql_backup_file} ]]; then
 	#backup failed
 	#todo send email
 	exit
 fi 
 
 if [[ ${save_latest_n_backup} -gt 0 ]]; then
-	cd $mysql_backup_dir
-	ls -t $mysql_backup_dir | awk -v n="${save_latest_n_backup}" 'NR > n {print}' | xargs rm -f 
+	cd ${mysql_backup_dir}
+	ls -t ${mysql_backup_dir} | awk -v n="${save_latest_n_backup}" 'NR > n {print}' | xargs rm -f
 fi
